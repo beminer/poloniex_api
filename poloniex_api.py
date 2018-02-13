@@ -1,5 +1,5 @@
 import requests, json
-from config import poloniex_key, poloniex_sign
+from config import poloniex_key, poloniex_sign, token
 import hmac, hashlib
 import urllib
 import time
@@ -33,6 +33,11 @@ def bittrex_ticker():
 	data = json.loads(api.text)
 	return data
 
+def telegram_update():
+	url = 'https://api.telegram.org/bot{0}/getUpdates'.format(token)
+	api = requests.get(url)
+	return api.text
+
 def main():
 
 	#возвращает связку USDT-BTC на  Poliniex
@@ -53,8 +58,7 @@ def main():
 	balance = api_query('returnBalances')
 	for i in balance.items():
 		if i[1] != '0.00000000':
-			print(i[0], ': \n\t', i[1] )	 			
-
+			print(i[0], ': \n\t', i[1] )
 
 if __name__ == '__main__':
 	main()
